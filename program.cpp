@@ -47,7 +47,7 @@ int main_menu(garage *Garage)
         break;
     default:
         cout<<"Invalid choice!"<<endl;
-        return main_menu(Garage);
+        main_menu(Garage);
         break;
     }
     update_json(Garage);
