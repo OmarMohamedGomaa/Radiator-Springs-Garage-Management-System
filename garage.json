@@ -1,0 +1,62 @@
+[
+    {
+        "age": 2,
+        "capacity": 2,
+        "car_no": 1,
+        "laps": 450,
+        "name": "Thunderbolt",
+        "performance_score": 2202,
+        "races": 15,
+        "speed": 220,
+        "team": "Red Falcons",
+        "type": "Racer"
+    },
+    {
+        "age": 1,
+        "capacity": 1,
+        "car_no": 2,
+        "laps": 210,
+        "name": "Lightning Bolt",
+        "performance_score": 2501,
+        "races": 8,
+        "speed": 250,
+        "team": "Blue Vipers",
+        "type": "Racer"
+    },
+    {
+        "age": 4,
+        "capacity": 3,
+        "car_no": 3,
+        "laps": 680,
+        "name": "Storm Chaser",
+        "performance_score": 1903,
+        "races": 22,
+        "speed": 190,
+        "team": "Red Falcons",
+        "type": "Racer"
+    },
+    {
+        "age": 3,
+        "capacity": 10,
+        "car_no": 4,
+        "crew": 5,
+        "name": "Pit Wagon",
+        "performance_score": 450,
+        "reliability": 92,
+        "speed": 80,
+        "team": "Blue Vipers",
+        "type": "Support"
+    },
+    {
+        "age": 5,
+        "capacity": 20,
+        "car_no": 5,
+        "crew": 3,
+        "name": "Fuel Runner",
+        "performance_score": 425,
+        "reliability": 88,
+        "speed": 65,
+        "team": "Red Falcons",
+        "type": "Support"
+    }
+]
