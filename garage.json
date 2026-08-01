@@ -49,13 +49,13 @@
     },
     {
         "age": 5,
-        "capacity": 20,
+        "capacity": 25,
         "car_no": 5,
         "crew": 3,
         "name": "Fuel Runner",
-        "performance_score": 425,
+        "performance_score": 475,
         "reliability": 88,
-        "speed": 65,
+        "speed": 70,
         "team": "Red Falcons",
         "type": "Support"
     }

@@ -8,7 +8,68 @@
 
 using namespace std;
 
+int read_positive_int(const string &prompt)
+{
+    while (true)
+    {
+        cout << prompt;
+        string text;
+        if (!getline(cin, text))
+        {
+            cin.clear();
+            continue;
+        }
 
+        try
+        {
+            int value = stoi(text);
+            if (value <= 0)
+                throw invalid_argument("Value must be a positive integer");
+            return value;
+        }
+        catch (const exception &)
+        {
+            cout << "Invalid input. Please enter a positive integer." << endl;
+        }
+    }
+}
+
+int read_menu_choice()
+{
+    while (true)
+    {
+        int value = read_positive_int("enter your choice : ");
+        if (value >= 1 && value <= 6)
+            return value;
+        cout << "Invalid choice. Enter a number between 1 and 6." << endl;
+    }
+}
+
+int read_non_negative_int(const string &prompt)
+{
+    while (true)
+    {
+        cout << prompt;
+        string text;
+        if (!getline(cin, text))
+        {
+            cin.clear();
+            continue;
+        }
+
+        try
+        {
+            int value = stoi(text);
+            if (value < 0)
+                throw invalid_argument("Value must be zero or a positive integer");
+            return value;
+        }
+        catch (const exception &)
+        {
+            cout << "Invalid input. Please enter a non-negative integer." << endl;
+        }
+    }
+}
 
 int main_menu(garage *Garage)
 {
@@ -22,24 +83,31 @@ int main_menu(garage *Garage)
     cout<<"|4. Tune up      |"<<endl;
     cout<<"|5. Report       |"<<endl;
     cout<<"|6. Exit         |"<<endl;
-    cout<<"enter your choice : ";
-    cin>>choice;
+    choice = read_menu_choice();
+    
+    try
+    {
     switch (choice)
     {
     case 1:
         add_car(Garage);
+        return main_menu(Garage);
         break;
     case 2:
         retire_car(Garage);
+        return main_menu(Garage);
         break;
     case 3:
         display_cars(Garage);
+        return main_menu(Garage);
         break;
     case 4:
         tune_up(Garage);
+        return main_menu(Garage);
         break;
     case 5:
         report(Garage);
+        return main_menu(Garage);
         break;
     case 6:
         cout<<"Exiting..."<<endl;
@@ -47,11 +115,16 @@ int main_menu(garage *Garage)
         break;
     default:
         cout<<"Invalid choice!"<<endl;
-        main_menu(Garage);
         break;
     }
+    }
+    catch(const invalid_argument& e)
+    {
+        std::cerr << e.what() << '\n';
+        main_menu(Garage);
+    }
     update_json(Garage);
-    return main_menu(Garage);
+    return 0;
     
 }
 void add_car(garage *Garage)
@@ -61,8 +134,7 @@ void add_car(garage *Garage)
         int car_no, age, speed, capacity;
         string name, team;
         cout<<"Enter Car Type (0 for Racer, 1 for Support): ";
-        int type_input;
-        cin>>type_input;
+        int type_input = read_non_negative_int("");
         if (type_input == 0)
             type = carType::Racer;
         else if (type_input == 1)
@@ -72,40 +144,27 @@ void add_car(garage *Garage)
             cout<<"Invalid Car Type!"<<endl;
             return;
         }
-        cout<<"Enter Car Number: ";
-        cin>>car_no;
+        car_no = read_positive_int("Enter Car Number: ");
         cout<<"Enter Car Name: ";
-        cin.ignore();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         getline(cin,name);
-        cout<<"Enter Car Age: ";
-        cin>>age;
+        age = read_positive_int("Enter Car Age: ");
         cout<<"Enter Car Team: ";
-        cin.ignore();
         getline(cin,team);
-        cout<<"Enter Car Speed: ";
-        cin>>speed;
-        cout<<"Enter Car Capacity: ";   
-        cin>>capacity;
+        speed = read_positive_int("Enter Car Speed: ");
+        capacity = read_positive_int("Enter Car Capacity: ");
         if (type == carType::Racer)
         {
-            cout<<"Enter Number of Races: ";
-            int races ;
-            cin>>races;
-            cout<<"Enter Number of Laps: ";
-            int laps ;
-            cin>>laps;
+            int races = read_positive_int("Enter Number of Races: ");
+            int laps = read_positive_int("Enter Number of Laps: ");
             racer *new_r = new racer(car_no, name, age, team, speed, capacity, races, laps);
             new_r->set_car_type(type);
             Garage->add_car(new_r);
         }
         else if (type == carType::Support)
         {
-            cout<<"Enter Number of Crew Members: ";
-            int crew ;
-            cin>>crew;
-            cout<<"Enter Reliability Score: ";  
-            int reliability ;
-            cin>>reliability;
+            int crew = read_positive_int("Enter Number of Crew Members: ");
+            int reliability = read_positive_int("Enter Reliability Score: ");
             support *new_s = new support(car_no, name, age, team, speed, capacity, crew, reliability);
             new_s->set_car_type(type);
             Garage->add_car(new_s);
@@ -120,9 +179,7 @@ void add_car(garage *Garage)
 }
 void retire_car(garage *Garage)
 {
-    int car_no;
-    cout<<"Enter Car Number to Retire: ";
-    cin>>car_no;
+    int car_no = read_positive_int("Enter Car Number to Retire: ");
     car *c = Garage->find_car(car_no);
     if (c != nullptr)
     {
@@ -162,19 +219,13 @@ void report(garage *Garage)
 void tune_up(garage *Garage)
 {   try
     {
-        int car_no;
-        cout<<"Enter Car Number to Tune Up: ";
-        cin>>car_no;
+        int car_no = read_positive_int("Enter Car Number to Tune Up: ");
         car *c = Garage->find_car(car_no);
         if (c != nullptr)
         {
             c->display_info();
-            cout<<"Enter New Speed: ";
-            int new_speed ;
-            cin>>new_speed;
-            cout<<"Enter New Capacity: ";
-            int new_capacity ;
-            cin>>new_capacity;
+            int new_speed = read_positive_int("Enter New Speed: ");
+            int new_capacity = read_positive_int("Enter New Capacity: ");
             c->setSpeed(new_speed);
             c->setCapacity(new_capacity);
             c->updatePerformanceScore();   
